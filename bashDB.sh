@@ -28,7 +28,7 @@ delete_from_file () {
     check_if_entry_is_in $arg $file_name
     if [ $? == 0 ]
     then
-        sed -i "s|$line||" $file_name
+        sed -i "/$line/d" $file_name
         echo "Entry deleted !"
     else
         echo "You'r doing shit man ! Try again !"
@@ -38,7 +38,7 @@ delete_from_file () {
 
 check_if_entry_is_in () {
     name=$(echo $arg | cut -d= -f 1)
-    line=$(grep $name $file_name)
+    line=$(grep -w $name $file_name)
 }
 
 
