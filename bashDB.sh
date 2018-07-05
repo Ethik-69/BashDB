@@ -68,6 +68,18 @@ check_args_number () {
 }
 
 
+check_data_patern () {
+    regex=".+=.+"
+    if [[ $data =~ $regex ]];
+    then
+        :
+    else
+        echo "You'r doing shit man ! Try again !"
+        exit 0
+    fi
+}
+
+
 interactif_loop () {
     while true
     do
@@ -80,6 +92,7 @@ interactif_loop () {
 
         case $cmd in
             write)
+                check_data_patern $data
                 write_to_file $data $file_name
                 ;;
             read)
@@ -108,26 +121,25 @@ do
 
     key="$1"
     data="$2"
-    echo $1
-    echo $2
 
     case $key in
         -w)
-            #write_to_file $data $file_name
+            check_data_patern $data
+            write_to_file $data $file_name
             shift
             shift
             arg_least=$#
             check_args_number $arg_least
             ;;
         -r)
-            #read_file $data $file_name
+            read_file $data $file_name
             shift
             shift
             arg_least=$#
             check_args_number $arg_least
             ;;
         -d)
-            #delete_from_file $data $file_name
+            delete_from_file $data $file_name
             shift
             shift
             arg_least=$#
@@ -139,7 +151,7 @@ do
             ;;
          *)
             echo 'Try again !'
-            shift
+            exit 0
             ;;
     esac
 done
