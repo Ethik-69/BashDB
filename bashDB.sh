@@ -60,6 +60,14 @@ check_file_exist () {
 }
 
 
+check_args_number () {
+    if [[ $# -eq 1 ]];
+    then
+        exit 0
+    fi
+}
+
+
 interactif_loop () {
     while true
     do
@@ -106,16 +114,19 @@ do
             write_to_file $data $file_name
             shift
             shift
+            check_args_number $#
             ;;
         -r)
             read_file $data $file_name
             shift
             shift
+            check_args_number $#
             ;;
         -d)
             delete_from_file $data $file_name
             shift
             shift
+            check_args_number $#
             ;;
         *.db)
             interactif_loop $file_name
