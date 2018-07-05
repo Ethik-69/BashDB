@@ -3,16 +3,26 @@
 
 write_to_file () {
     check_file_exist $file_name
-    echo $arg $file_name
+    name=$(echo $arg | cut -d= -f 1)
+    line=$(grep $name $file_name)
+    if [ $? == 0 ]
+    then
+        sed -i "s|$line|$arg|" $file_name
+    else
+        echo $arg >> $file_name
+    fi
 }
 
 
 read_file () {
-    echo $arg $file_name
+    grep -w $arg $file_name || false
 }
 
 
 delete_from_file () {
+    # check if value exist
+    # if no say "you'r doing shit =D"
+    # if yes just del it
     echo $arg $file_name
 }
 
