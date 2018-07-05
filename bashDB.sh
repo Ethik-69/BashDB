@@ -81,10 +81,10 @@ check_data_patern () {
     regex=".+=.+"
     if [[ $data =~ $regex ]];
     then
-        :
+        error=0
     else
         echo "[*] Wrong Pattern !"
-        exit 0
+        error=1
     fi
 }
 
@@ -113,7 +113,12 @@ interactif_loop () {
         case $cmd in
             write)
                 check_data_patern $data
-                write_to_file $data $file_name
+                if [ $error == 0 ];
+                then
+                    write_to_file $data $file_name
+                else
+                    continue
+                fi
                 ;;
             read)
                 read_file $data $file_name
@@ -146,9 +151,14 @@ do
     case $key in
         -w)
             check_data_patern $data
-            write_to_file $data $file_name
-            shift
-            shift
+            if [ $error == 0 ];
+            then
+                write_to_file $data $file_name
+                shift
+                shift
+            else
+                exit 0
+            fi
             arg_least=$#
             check_args_number $arg_least
             ;;
