@@ -44,7 +44,7 @@ delete_from_file () {
 
 check_if_entry_is_in () {
     name=$(echo $data | cut -d= -f 1)
-    line=$(grep -w $name'=' $file_name)
+    line=$(grep -w "^$name" $file_name)
 }
 
 
@@ -61,7 +61,7 @@ check_file_exist () {
 
 
 check_args_number () {
-    if [[ $# -eq 1 ]];
+    if [[ $arg_least -eq 1 ]];
     then
         exit 0
     fi
@@ -108,25 +108,30 @@ do
 
     key="$1"
     data="$2"
+    echo $1
+    echo $2
 
     case $key in
         -w)
-            write_to_file $data $file_name
+            #write_to_file $data $file_name
             shift
             shift
-            check_args_number $#
+            arg_least=$#
+            check_args_number $arg_least
             ;;
         -r)
-            read_file $data $file_name
+            #read_file $data $file_name
             shift
             shift
-            check_args_number $#
+            arg_least=$#
+            check_args_number $arg_least
             ;;
         -d)
-            delete_from_file $data $file_name
+            #delete_from_file $data $file_name
             shift
             shift
-            check_args_number $#
+            arg_least=$#
+            check_args_number $arg_least
             ;;
         *.db)
             interactif_loop $file_name
