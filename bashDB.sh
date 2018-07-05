@@ -80,6 +80,17 @@ check_data_patern () {
 }
 
 
+check_file_extension () {
+    ext=$(echo $file_name | rev | cut -d'.' -f 1 | rev)
+    if [[ ! $ext  == "db" ]];
+    then
+        echo "You'r doing shit man ! Try again !"
+        exit 0
+    fi
+
+}
+
+
 interactif_loop () {
     while true
     do
@@ -118,6 +129,7 @@ do
     ar=$#
     # Get the value of the last params
     file_name=${!ar}
+    check_file_extension $file_name
 
     key="$1"
     data="$2"
