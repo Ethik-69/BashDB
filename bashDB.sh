@@ -11,20 +11,29 @@ write_to_file () {
     then
         # Replace $line by $data in file ($file_name)
         sed -i "s|$line|$data|" $file_name
-        echo "Updated"
+        echo "[*] Updated !"
     else
         echo $data >> $file_name
-        echo "Added"
+        echo "[*] Added !"
     fi
 }
 
 
 read_file () {
     # Find the line with $data in and echo it
-    grep -w $data $file_name
+    grep -w "^$data" $file_name
     if [ $? -gt 0 ];
     then
-        echo "You'r doing shit man ! Try again !"
+        echo "[*] Can't Find What You Wanted !"
+    fi
+}
+
+read_file_by_value () {
+    # Find the line with $data in and echo it
+    grep -w "$data$" $file_name
+    if [ $? -gt 0 ];
+    then
+        echo "[*] Can't Find What You Wanted !"
     fi
 }
 
@@ -35,9 +44,9 @@ delete_from_file () {
     then
         # Delete the whole line
         sed -i "/$line/d" $file_name
-        echo "Entry deleted !"
+        echo "[*] Entry deleted !"
     else
-        echo "You'r doing shit man ! Try again !"
+        echo "[*] Can't Find What You Wanted To Delete !"
     fi
 }
 
@@ -53,9 +62,9 @@ check_file_exist () {
     # if not touch it (You know what i mean ;) )
     if [ ! -e $file_name ]
     then
-        echo $file_name' do not exist ! Oh My F****** God !'
+        echo "[*] $file_name Does Not Exist ! Let Me Create It For You =D"
         touch $file_name
-        echo 'File Touched !'
+        echo '[*] File Created !'
     fi
 }
 
@@ -74,7 +83,7 @@ check_data_patern () {
     then
         :
     else
-        echo "You'r doing shit man ! Try again !"
+        echo "[*] Wrong Pattern !"
         exit 0
     fi
 }
@@ -84,7 +93,7 @@ check_file_extension () {
     ext=$(echo $file_name | rev | cut -d'.' -f 1 | rev)
     if [[ ! $ext  == "db" ]];
     then
-        echo "You'r doing shit man ! Try again !"
+        echo "[*] Bad File Extension !"
         exit 0
     fi
 
@@ -116,7 +125,7 @@ interactif_loop () {
                 exit 0
                 ;;
             *)
-                echo 'Try again !'
+                echo '[*] Try again !'
                 ;;
         esac
     done
@@ -143,7 +152,13 @@ do
             arg_least=$#
             check_args_number $arg_least
             ;;
-        -r)
+        -rv)
+            read_file_by_value $data $file_name
+            shift
+            shift
+            arg_least=$#
+            check_args_number $arg_least
+            ;;        -r)
             read_file $data $file_name
             shift
             shift
@@ -162,11 +177,8 @@ do
             shift
             ;;
          *)
-            echo 'Try again !'
+            echo '[*] Try again !'
             exit 0
             ;;
     esac
 done
-
-
-# TODO: verif data/file
