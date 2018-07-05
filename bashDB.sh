@@ -2,10 +2,14 @@
 
 
 write_to_file () {
+    # Write $data into file ($file_name)
     check_file_exist $file_name
     check_if_entry_is_in $data $file_name
+
+    # Check the exit status of the last command
     if [ $? == 0 ]
     then
+        # Replace $line by $data in file ($file_name)
         sed -i "s|$line|$data|" $file_name
         echo "Updated"
     else
@@ -16,6 +20,7 @@ write_to_file () {
 
 
 read_file () {
+    # Find the line with $data in and echo it
     grep -w $data $file_name
     if [ $? -gt 0 ];
     then
@@ -28,6 +33,7 @@ delete_from_file () {
     check_if_entry_is_in $data $file_name
     if [ $? == 0 ]
     then
+        # Delete the whole line
         sed -i "/$line/d" $file_name
         echo "Entry deleted !"
     else
@@ -43,6 +49,8 @@ check_if_entry_is_in () {
 
 
 check_file_exist () {
+    # Check if the file ($file_name) exist,
+    # if not touch it (You know what i mean ;) )
     if [ ! -e $file_name ]
     then
         echo $file_name' do not exist ! Oh My F****** God !'
@@ -57,6 +65,8 @@ interactif_loop () {
     do
         echo 'What do you want to do ? (q for quit)'
         read user_cmd
+        # Get the command writed by the user
+        # and the data
         cmd=$(echo $user_cmd | cut -d' ' -f 1)
         data=$(echo $user_cmd | cut -d' ' -f 2)
 
@@ -83,7 +93,9 @@ interactif_loop () {
 
 while [[ $# -gt 0 ]]
 do
+    # Get $# (the number of params)
     ar=$#
+    # Get the value of the last params
     file_name=${!ar}
 
     key="$1"
@@ -115,7 +127,3 @@ do
             ;;
     esac
 done
-
-
-#TODO: test validité data entré
-#TODO: test ext fichier
