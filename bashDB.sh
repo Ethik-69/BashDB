@@ -44,7 +44,7 @@ delete_from_file () {
 
 check_if_entry_is_in () {
     name=$(echo $data | cut -d= -f 1)
-    line=$(grep -w $name $file_name)
+    line=$(grep -w $name'=' $file_name)
 }
 
 
@@ -138,3 +138,6 @@ do
             ;;
     esac
 done
+
+
+# TODO: verif data/file
