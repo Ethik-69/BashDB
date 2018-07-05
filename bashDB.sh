@@ -7,8 +7,10 @@ write_to_file () {
     if [ $? == 0 ]
     then
         sed -i "s|$line|$arg|" $file_name
+        echo "Updated"
     else
         echo $arg >> $file_name
+        echo "Added"
     fi
 }
 
@@ -23,10 +25,14 @@ read_file () {
 
 
 delete_from_file () {
-    # check if value exist
-    # if no say "you'r doing shit =D"
-    # if yes just del it
-    echo $arg $file_name
+    check_if_entry_is_in $arg $file_name
+    if [ $? == 0 ]
+    then
+        sed -i "s|$line||" $file_name
+        echo "Entry deleted !"
+    else
+        echo "You'r doing shit man ! Try again !"
+    fi
 }
 
 
