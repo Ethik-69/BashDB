@@ -3,8 +3,7 @@
 
 write_to_file () {
     check_file_exist $file_name
-    name=$(echo $arg | cut -d= -f 1)
-    line=$(grep $name $file_name)
+    check_if_entry_is_in $arg $file_name
     if [ $? == 0 ]
     then
         sed -i "s|$line|$arg|" $file_name
@@ -15,7 +14,11 @@ write_to_file () {
 
 
 read_file () {
-    grep -w $arg $file_name || false
+    grep -w $arg $file_name
+    if [ $? -gt 0 ];
+    then
+        echo "You'r doing shit man ! Try again !"
+    fi
 }
 
 
@@ -24,6 +27,12 @@ delete_from_file () {
     # if no say "you'r doing shit =D"
     # if yes just del it
     echo $arg $file_name
+}
+
+
+check_if_entry_is_in () {
+    name=$(echo $arg | cut -d= -f 1)
+    line=$(grep $name $file_name)
 }
 
 
