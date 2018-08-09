@@ -1,10 +1,10 @@
 node {
     stage('Run GiveItATry') {
-        build job: '../GiveItATry'
+        build job: '../../GiveItATry'
     }
     
     stage('Run GiveItASecondTry') {
-        build job: '../GiveItASecondTry'
+        build job: '../../GiveItASecondTry'
     }
     
     stage('Run Shell') {
